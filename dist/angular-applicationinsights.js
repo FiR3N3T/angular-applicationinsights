@@ -339,7 +339,6 @@ var StackFrame = (function () {
     //}
     StackFrame.prototype.setLineNumber = function (v) {
         if (!Tools.isNumber(v)) {
-
             this.line = undefined;
             return;
         }
@@ -650,7 +649,8 @@ var ApplicationInsights = (function () {
         this._userKey = "$$appInsights__uuid";
         this._deviceKey = "$$appInsights__device";
         this._deviceTypeKey = "$$appInsights__device__type";
-        this._version = "angular:0.3.0";
+        this._deviceRoleName = "$$appInsights__device__roleName";
+        this._version = "angular-neo:0.3.1";
         this._analyticsServiceUrl = "https://dc.services.visualstudio.com/v2/track";
         this._contentType = "application/json";
         this._localStorage = localStorage;
@@ -701,6 +701,12 @@ var ApplicationInsights = (function () {
     ApplicationInsights.prototype.setDeviceInfo = function (id, type) {
         this._localStorage.set(this._deviceKey, id);
         this._localStorage.set(this._deviceTypeKey, type);
+    };
+    ApplicationInsights.prototype.getDeviceRoleName = function () {
+        return this._localStorage.get(this._deviceRoleName);
+    };
+    ApplicationInsights.prototype.setDeviceRoleName = function (roleName) {
+        this._localStorage.set(this._deviceRoleName, roleName);
     };
     ApplicationInsights.prototype.getOperationId = function () {
         var uuidKey = "$$appInsights__operationid";
@@ -932,6 +938,9 @@ var ApplicationInsights = (function () {
     ApplicationInsights.prototype.defineDevice = function (id, type) {
         this.setDeviceInfo(id, type);
     };
+    ApplicationInsights.prototype.defineDeviceRoleName = function (roleName) {
+        this.setDeviceRoleName(roleName);
+    };
     ApplicationInsights.prototype.generateAppInsightsData = function (payloadName, payloadDataType, payloadData) {
         if (this._commonProperties) {
             payloadData.properties = payloadData.properties || {};
@@ -956,7 +965,8 @@ var ApplicationInsights = (function () {
                 id: this.getDeviceId(),
                 locale: this._locale.id,
                 resolution: this._window.screen.availWidth + "x" + this._window.screen.availHeight,
-                type: this.getDeviceType()
+                type: this.getDeviceType(),
+                roleName: this.getDeviceRoleName()
             },
             internal: {
                 sdkVersion: this._version

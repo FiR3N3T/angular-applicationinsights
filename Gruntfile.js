@@ -9,7 +9,7 @@ module.exports = function(grunt) {
                 options: {
                     comments: true
                 },
-                out: "build/angular-applicationinsights.js"
+                out: "dist/angular-applicationinsights.js"
             }
         },
     pkg: grunt.file.readJSON('package.json'),
@@ -18,8 +18,8 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> version <%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'build/<%= pkg.name %>.js',
-        dest: 'build/<%= pkg.name %>.min.js'
+        src: 'dist/<%= pkg.name %>.js',
+        dest: 'dist/<%= pkg.name %>.min.js'
       }
     },
     coveralls: {
@@ -71,7 +71,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma-coveralls');
 
   
-  grunt.registerTask('default', ['ts', 'karma', 'concat', 'strip_code', 'uglify']);
-  grunt.registerTask('travis',['ts','karma','concat','strip_code','uglify','coveralls']);
+  grunt.registerTask('default', ['ts', 'concat', 'strip_code', 'uglify']);
+  grunt.registerTask('travis',['ts', 'concat','strip_code','uglify','coveralls']);
 
 };

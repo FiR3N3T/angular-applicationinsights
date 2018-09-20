@@ -79,9 +79,6 @@ class StackFrame {
 
     private setLineNumber(v) {
         if (!Tools.isNumber(v)) {
-            /* test-code */
-            console.log('LineNumber is ' + v);
-            /* end-test-code */
             this.line = undefined;
             return;
         }

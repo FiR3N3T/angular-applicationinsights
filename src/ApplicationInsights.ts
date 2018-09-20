@@ -24,6 +24,7 @@ class ApplicationInsights {
     private _userKey = "$$appInsights__uuid";
     private _deviceKey = "$$appInsights__device";
     private _deviceTypeKey = "$$appInsights__device__type";
+    private _deviceRoleName = "$$appInsights__device__roleName";
     options: Options;
 
     private static namespace = "Microsoft.ApplicationInsights.";
@@ -44,7 +45,7 @@ class ApplicationInsights {
 
     private _commonProperties: any;
 
-    private _version = "angular:0.3.0";
+    private _version = "angular-neo:0.3.2";
     private _analyticsServiceUrl = "https://dc.services.visualstudio.com/v2/track";
     private _contentType = "application/json";
 
@@ -117,6 +118,14 @@ class ApplicationInsights {
     private setDeviceInfo(id, type) {
         this._localStorage.set(this._deviceKey, id);
         this._localStorage.set(this._deviceTypeKey, type);
+    }
+
+    private getDeviceRoleName() {
+        return this._localStorage.get(this._deviceRoleName);
+    }
+    
+    private setDeviceRoleName(roleName) {
+        this._localStorage.set(this._deviceRoleName, roleName);
     }
 
     private getOperationId() {
@@ -399,6 +408,10 @@ class ApplicationInsights {
         this.setDeviceInfo(id, type);
     }
 
+    defineDeviceRoleName(roleName) {
+        this.setDeviceRoleName(roleName);
+    }
+
     private generateAppInsightsData(payloadName, payloadDataType, payloadData) {
 
         if (this._commonProperties) {
@@ -425,7 +438,8 @@ class ApplicationInsights {
                 id: this.getDeviceId(),
                 locale: this._locale.id,
                 resolution: this._window.screen.availWidth + "x" + this._window.screen.availHeight,
-                type: this.getDeviceType()
+                type: this.getDeviceType(),
+                roleName: this.getDeviceRoleName()
             },
             internal: {
                 sdkVersion: this._version
