@@ -647,10 +647,12 @@ var ApplicationInsights = (function () {
         var _this = this;
         this._sessionKey = "$$appInsights__session";
         this._userKey = "$$appInsights__uuid";
+        this._userAccountId = "$$appInsights__user__accountId";
+        this._userAuthId = "$$appInsights__user__authId";
         this._deviceKey = "$$appInsights__device";
         this._deviceTypeKey = "$$appInsights__device__type";
         this._deviceRoleName = "$$appInsights__device__roleName";
-        this._version = "angular-neo:0.3.1";
+        this._version = "angular-neo:0.3.3";
         this._analyticsServiceUrl = "https://dc.services.visualstudio.com/v2/track";
         this._contentType = "application/json";
         this._localStorage = localStorage;
@@ -682,6 +684,26 @@ var ApplicationInsights = (function () {
     };
     ApplicationInsights.prototype.setUserId = function (userId) {
         this._localStorage.set(this._userKey, userId);
+    };
+    ApplicationInsights.prototype.getUserAccountId = function () {
+        var userAccountId = this._localStorage.get(this._userAccountId);
+        if (Tools.isNullOrUndefined(userAccountId)) {
+            this._localStorage.set(this._userAccountId, userAccountId);
+        }
+        return userAccountId;
+    };
+    ApplicationInsights.prototype.setUserAccountId = function (userAccountId) {
+        this._localStorage.set(this._userAccountId, userAccountId);
+    };
+    ApplicationInsights.prototype.getUserAuthId = function () {
+        var userAuthId = this._localStorage.get(this._userAuthId);
+        if (Tools.isNullOrUndefined(userAuthId)) {
+            this._localStorage.set(this._userAuthId, userAuthId);
+        }
+        return userAuthId;
+    };
+    ApplicationInsights.prototype.setUserAuthId = function (userAuthId) {
+        this._localStorage.set(this._userAuthId, userAuthId);
     };
     ApplicationInsights.prototype.getDeviceId = function () {
         var id = this._localStorage.get(this._deviceKey);
@@ -974,6 +996,11 @@ var ApplicationInsights = (function () {
             data: {
                 type: payloadDataType,
                 item: payloadData
+            },
+            tags: {
+                "ai.user.id": this.getUserId(),
+                "ai.user.accountId": this.getUserAccountId(),
+                "ai.user.authUserId": this.getUserAuthId()
             }
         };
     };
@@ -1093,4 +1120,4 @@ var AppInsightsProvider = (function () {
     }; // invoked when the provider is run
     return AppInsightsProvider;
 }());
-//# sourceMappingURL=angular-applicationinsights.js.map
+//# sourceMappingURL=angular-applicationinsights-neo.js.map

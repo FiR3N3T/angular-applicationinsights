@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>angular-applicationinsights</id>
-        <version>0.3.1</version>
+        <version>0.3.3</version>
         <title>Application Insights for AngularJS</title>
         <authors>khaines</authors>
         <owners>khaines,eqwik</owners>

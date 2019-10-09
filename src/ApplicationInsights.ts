@@ -22,6 +22,8 @@ class ApplicationInsights {
     private _exceptionInterceptor: ExceptionInterceptor;
     private _sessionKey = "$$appInsights__session";
     private _userKey = "$$appInsights__uuid";
+    private _userAccountId = "$$appInsights__user__accountId";
+    private _userAuthId = "$$appInsights__user__authId";
     private _deviceKey = "$$appInsights__device";
     private _deviceTypeKey = "$$appInsights__device__type";
     private _deviceRoleName = "$$appInsights__device__roleName";
@@ -45,7 +47,7 @@ class ApplicationInsights {
 
     private _commonProperties: any;
 
-    private _version = "angular-neo:0.3.2";
+    private _version = "angular-neo:0.3.3";
     private _analyticsServiceUrl = "https://dc.services.visualstudio.com/v2/track";
     private _contentType = "application/json";
 
@@ -92,6 +94,30 @@ class ApplicationInsights {
 
     private setUserId(userId) {
         this._localStorage.set(this._userKey, userId);
+    }
+
+    private getUserAccountId() {
+        var userAccountId = this._localStorage.get(this._userAccountId);
+        if (Tools.isNullOrUndefined(userAccountId)) {
+            this._localStorage.set(this._userAccountId, userAccountId);
+        }
+        return userAccountId;
+    }
+
+    private setUserAccountId(userAccountId) {
+        this._localStorage.set(this._userAccountId, userAccountId);
+    }
+
+    private getUserAuthId() {
+        var userAuthId = this._localStorage.get(this._userAuthId);
+        if (Tools.isNullOrUndefined(userAuthId)) {
+            this._localStorage.set(this._userAuthId, userAuthId);
+        }
+        return userAuthId;
+    }
+
+    private setUserAuthId(userAuthId) {
+        this._localStorage.set(this._userAuthId, userAuthId);
     }
 
     private getDeviceId() {
@@ -418,7 +444,7 @@ class ApplicationInsights {
             payloadData.properties = payloadData.properties || {};
             Tools.extend(payloadData.properties, this._commonProperties);
         }
-        
+
         return {
             name: payloadName,
             time: new Date().toISOString(),
@@ -447,6 +473,11 @@ class ApplicationInsights {
             data: {
                 type: payloadDataType,
                 item: payloadData
+            },
+            tags: {
+                "ai.user.id": this.getUserId(),
+                "ai.user.accountId": this.getUserAccountId(),
+                "ai.user.authUserId": this.getUserAuthId()
             }
         };
     }

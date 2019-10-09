@@ -9,7 +9,7 @@ module.exports = function(grunt) {
                 options: {
                     comments: true
                 },
-                out: "dist/angular-applicationinsights.js"
+                out: "dist/<%= pkg.name %>.js"
             }
         },
     pkg: grunt.file.readJSON('package.json'),
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      all: ['src/**/*js', 'build/angular-applicationinsights.js', 'test/**/*.js']
+      all: ['src/**/*js', 'build/<%= pkg.name %>.js', 'test/**/*.js']
     },
     karma: {
       unit: {
@@ -44,8 +44,8 @@ module.exports = function(grunt) {
         separator: '\n',
       },
       dist: {
-        src: ['build/angular-applicationinsights.js'],
-        dest: 'build/angular-applicationinsights.js',
+        src: ['build/<%= pkg.name %>.js'],
+        dest: 'build/<%= pkg.name %>.js',
       },
     },
     

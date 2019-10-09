@@ -1,6 +1,6 @@
 {
-  "name": "angular-applicationinsights",
-  "version": "0.3.2",
+  "name": "angular-applicationinsights-neo",
+  "version": "0.3.3",
   "homepage": "https://github.com/VladimirRybalko/angular-applicationinsights",
   "authors": [
     "Ken Haines <ken@kenhaines.net>",
